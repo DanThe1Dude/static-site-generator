@@ -1,0 +1,22 @@
+import unittest
+
+from leafnode import LeafNode
+
+
+class TestLeafNode(unittest.TestCase):
+    def test_leaf_to_html_p(self):
+        node = LeafNode("p", "Hello, world!")
+        self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+
+    def test_leaf_to_html_b(self):
+        node = LeafNode("b", "Hello, world!")
+        self.assertEqual(node.to_html(), "<b>Hello, world!</b>")
+
+    def test_leaf_to_html_a(self):
+        node = LeafNode("a", "Click me!", {"href": "https://www.google.com"})
+        expectedd_result = '<a href="https://www.google.com">Click me!</a>'
+        self.assertEqual(node.to_html(), expectedd_result)
+
+    def test_leaf_to_html_blank(self):
+        node = LeafNode("", "Hello, world!")
+        self.assertEqual(node.to_html(), "Hello, world!")
