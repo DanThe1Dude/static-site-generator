@@ -36,7 +36,6 @@ def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]: #inefficent 
             rest_of_text = original_text
             for image_alt, image_link in temp:
                 sections = rest_of_text.split(f"![{image_alt}]({image_link})", 1)
-                print(sections)
                 rest_of_text = sections[1]
                 if sections[0] != "":
                     new_nodes.append(TextNode(sections[0], TextType.TEXT))
