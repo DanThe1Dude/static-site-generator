@@ -9,7 +9,7 @@ class ParentNode(HTMLNode):
         if self.tag == None or self.tag == "":
             raise ValueError("tag missing")
         if self.children == None or len(self.children) == 0:
-            raise ValueError("children missing or too few")
+            raise ValueError(f"children missing or too few: {self.tag}, {self.value}, {self.children}")
         children_as_html = ""
         for child in self.children:
             children_as_html = children_as_html + child.to_html()

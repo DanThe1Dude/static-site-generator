@@ -1,6 +1,5 @@
-from textnode import TextNode, LeafNode, TextType
-
 from extract_link_img import extract_markdown_images, extract_markdown_links
+from textnode import TextNode, TextType
 
 
 def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: TextType) -> list[TextNode]:
@@ -10,7 +9,7 @@ def split_nodes_delimiter(old_nodes: list[TextNode], delimiter: str, text_type: 
         if old_node.text_type == TextType.TEXT:
             texts = old_node.text.split(delimiter)
             if len(texts) % 2 == 0:
-                raise SyntaxError(f"Invalid Markdown Syntax: Delimiter {delimiter} is missing")
+                raise SyntaxError(f"Invalid Markdown Syntax: Delimiter {delimiter} is missing\n{texts}")
 
             for i in range(len(texts)):
                 text = texts[i]
@@ -65,7 +64,7 @@ def split_nodes_link(old_nodes: list[TextNode]) -> list[TextNode]: #inefficent c
             new_nodes.append(old_node)
     return new_nodes
 
-def text_to_text_nodes(text):
+def text_to_text_nodes(text : str):
     with_links = split_nodes_link([TextNode(text, TextType.TEXT)])
     with_images = split_nodes_image(with_links)
     with_bold = split_nodes_delimiter(with_images, "**", TextType.BOLD)
@@ -73,3 +72,4 @@ def text_to_text_nodes(text):
     with_code_block = split_nodes_delimiter(with_italics, "`", TextType.CODE_TEXT)
     results = with_code_block
     return results
+
