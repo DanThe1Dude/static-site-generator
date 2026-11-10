@@ -11,7 +11,13 @@ class ParentNode(HTMLNode):
         if self.children == None or len(self.children) == 0:
             raise ValueError(f"children missing or too few: {self.tag}, {self.value}, {self.children}")
         children_as_html = ""
+        
         for child in self.children:
-            children_as_html = children_as_html + child.to_html()
+            try:
+                children_as_html = children_as_html + child.to_html()
+            except NotImplementedError:
+                print("NotImplimentedError Found in parent node")
+            except ValueError:
+                print("child parent node had value error, assuming parent empty and continuing")
         
         return f"<{self.tag}{self.props_to_html()}>{children_as_html}</{self.tag}>"

@@ -33,7 +33,10 @@ def markdown_to_blocks(markdown: str):
             to_remove.append(original_block)
         blocks[i] = block
     for remove in to_remove:
-        blocks.remove(remove)
+        if remove in blocks:
+            print("blocks: ", blocks)
+            print("remove: ", remove)
+            blocks.remove(remove)
     return blocks
 
 def block_to_block_type(block : str):
@@ -89,7 +92,7 @@ def markdown_to_html_node(markdown : str) -> HTMLNode:
         block_type = block_to_block_type(block)
         match block_type:
             case BlockType.PARAGRAPH:
-                html_node = ParentNode("p", text_to_children(block))
+                html_node = ParentNode("p", [*text_to_children(block)])
             case BlockType.HEADING:
                 level = 0
                 for letter in block[0:6]:

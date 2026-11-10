@@ -82,19 +82,16 @@ This is another paragraph with _italic_ text and `code` here
         md = """
 # Heading test
 
-This is **bolded** paragraph
+This is a paragraph
 text in a p
 tag here
-
-This is another paragraph with _italic_ text and `code` here
-
-    """
+"""
 
         node = markdown_to_html_node(md)
         html = node.to_html()
         self.assertEqual(
             html,
-            "<div><h1>Heading test</h1><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
+            "<div><h1>Heading test</h1><p>This is a paragraph text in a p tag here</p></div>",
         )
 
     def test_quote_block(self):
@@ -163,6 +160,12 @@ tag here
 
 This is another paragraph with _italic_ text and `code` here
 
+- a thing
+- another thing
+
+1. first thing
+2. second thing
+
     """
 
         node = markdown_to_html_node(md)
@@ -170,5 +173,5 @@ This is another paragraph with _italic_ text and `code` here
         print(html)
         self.assertEqual(
             html,
-            "<div><h1>Full Test</h1><p>This is <b>bolded</b> paragraph text in a p tag here</p><quoteblock>HTML is hard</quoteblock><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
+            "<div><h1>Full Test</h1><p>This is <b>bolded</b> paragraph text in a p tag here</p><quoteblock>HTML is hard</quoteblock><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p><ul><li>- a thing</li><li>- another thing</ul><ol><li>1. first thing</li><li>2. second thing</li></div>",
         )

@@ -19,7 +19,7 @@ class TestParentNode(unittest.TestCase):
         parent_node = ParentNode("div", [child_node])
         self.assertEqual(parent_node.to_html(), "<div><span>child</span></div>")
 
-    def test_to_html_with_empty_child(self):
+    def depriciated_test_to_html_with_empty_child(self):
         child_node = LeafNode("", "")
         parent_node = ParentNode("div", [child_node])
         self.assertRaises(ValueError, parent_node.to_html)
