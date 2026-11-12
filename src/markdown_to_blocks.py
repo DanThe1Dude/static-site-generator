@@ -1,9 +1,9 @@
 from enum import Enum
 
 from htmlnode import HTMLNode
+from leafnode import LeafNode
 from md_to_nodes import text_to_text_nodes
-from src.leafnode import LeafNode
-from src.parentnode import ParentNode
+from parentnode import ParentNode
 from textnode import text_node_to_html_node
 
 
