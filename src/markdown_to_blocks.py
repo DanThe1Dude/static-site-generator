@@ -34,8 +34,8 @@ def markdown_to_blocks(markdown: str):
         blocks[i] = block
     for remove in to_remove:
         if remove in blocks:
-            print("blocks: ", blocks)
-            print("remove: ", remove)
+            #print("blocks: ", blocks)
+            #print("remove: ", remove)
             blocks.remove(remove)
     return blocks
 
@@ -103,7 +103,7 @@ def markdown_to_html_node(markdown : str) -> HTMLNode:
             case BlockType.CODE:
                 html_node = ParentNode("pre", [LeafNode("code", block.strip("`").lstrip("\n"))])
             case BlockType.QUOTE:
-                html_node = ParentNode("blockquote", [*text_to_children(block.lstrip(">"))])
+                html_node = ParentNode("blockquote", [*text_to_children(block.replace(">", ""))])
             case BlockType.UNORDERED_LIST:
                 html_node = ParentNode("ul", [*text_to_list_elements(block)])
             case BlockType.ORDERED_LIST:
@@ -120,10 +120,10 @@ def text_to_list_elements(text : str):
     lines = text.split("\n")
     results = []
     for line in lines:
-        children = list(map(text_node_to_html_node, text_to_text_nodes(line)))
+        children = list(map(text_node_to_html_node, text_to_text_nodes(line.lstrip("1234567890-").lstrip(". "))))
         for child in children:
             if child.tag == "p":
                 child.tag = None
-            li_node = ParentNode("li", [*children])
-            results.append(li_node)
+        li_node = ParentNode("li", [*children])
+        results.append(li_node)
     return results

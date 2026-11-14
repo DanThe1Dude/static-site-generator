@@ -32,6 +32,7 @@ def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]: #inefficent 
         original_text = old_node.text
         temp = extract_markdown_images(original_text)
         if temp != []:
+            print("image detected")
             rest_of_text = original_text
             for image_alt, image_link in temp:
                 sections = rest_of_text.split(f"![{image_alt}]({image_link})", 1)
@@ -39,6 +40,7 @@ def split_nodes_image(old_nodes: list[TextNode]) -> list[TextNode]: #inefficent 
                 if sections[0] != "":
                     new_nodes.append(TextNode(sections[0], TextType.TEXT))
                 new_nodes.append(TextNode(image_alt, TextType.IMAGE, image_link))
+                print(new_nodes[-1])
             if rest_of_text != "":
                 new_nodes.append(TextNode(rest_of_text, TextType.TEXT))
         else:
