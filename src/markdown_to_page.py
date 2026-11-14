@@ -4,18 +4,17 @@ import shutil
 from markdown_to_blocks import markdown_to_html_node
 
 
-def copy_static_to_public():
-    clear_public()
-    copy_all_r("static", "public")
+def copy_static_to_dir():
+    clear_dir()
+    copy_all_r("static", "docs")
 
 
-def clear_public():
-    shutil.rmtree("public")
-    os.mkdir("public")
+def clear_dir():
+    shutil.rmtree("docs")
+    os.mkdir("docs")
 
 
 def copy_all_r(source, destination):
-    print(f"source: {source}")
     if not os.path.exists(source):
         return
 
@@ -35,8 +34,8 @@ def extract_title(markdown : str) -> str:
         return line1.lstrip("# ")
     raise ValueError("Title not found at start of input")
 
-def generate_page(from_path : str, template_path : str, dest_path : str) -> None:
-    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+def generate_page(from_path : str, template_path : str, dest_path : str, basepath : str) -> None:
+    print(f"Generating page from {from_path} to {dest_path} using {template_path} at {basepath}")
     with open(from_path, "r") as f:
         content = f.read()
     with open(template_path, "r") as f:
@@ -45,7 +44,8 @@ def generate_page(from_path : str, template_path : str, dest_path : str) -> None
     content_to_html_nodes = markdown_to_html_node(content)
     html_content = content_to_html_nodes.to_html()
     template = template.replace("{{ Title }}", title)
-    final = template.replace("{{ Content }}", html_content)
+    template = template.replace("{{ Content }}", html_content)
+    final = template.replace('href="/', f'href="{basepath}').replace('src="/',f'src="{basepath}')
 
     parts = dest_path.split("/")
     current_path = parts[0]
@@ -56,11 +56,10 @@ def generate_page(from_path : str, template_path : str, dest_path : str) -> None
     with open(dest_path.replace(".md", ".html"), "x") as f:
         f.write(final)
         
-def generate_pages(from_path : str, template_path : str, dest_path : str) -> None:
+def generate_pages(from_path : str, template_path : str, dest_path : str, basepath : str = "/") -> None:
     if os.path.isfile(from_path):
-        print(f"Generating: {from_path}")
-        generate_page(from_path, template_path, dest_path)
+        generate_page(from_path, template_path, dest_path, basepath)
     if os.path.isdir(from_path):
         paths = os.listdir(from_path)
         for path in paths:
-            generate_pages(from_path + "/" + path, template_path, dest_path + "/" + path)
+            generate_pages(from_path + "/" + path, template_path, dest_path + "/" + path, basepath)

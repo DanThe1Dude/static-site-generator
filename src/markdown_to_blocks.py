@@ -34,8 +34,6 @@ def markdown_to_blocks(markdown: str):
         blocks[i] = block
     for remove in to_remove:
         if remove in blocks:
-            #print("blocks: ", blocks)
-            #print("remove: ", remove)
             blocks.remove(remove)
     return blocks
 
